@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>مرحبًا بك</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin-top: 100px;
+      }
+      h1 {
+        font-size: 36px;
+      }
+      p {
+        font-size: 20px;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>مرحبًا بك 👋</h1>
+    <p>👁 عدد الزوار: <span id="count">0</span></p>
+
+    <script>
+      // API لحساب عدد الزيارات
+      const countEl = document.getElementById('count');
+      const namespace = "haitham-website"; // يمكنك تغييره إن أردت
+      const key = "visits";
+
+      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(res => res.json())
+        .then(res => {
+          countEl.textContent = res.value;
+        });
+    </script>
+  </body>
+</html>
