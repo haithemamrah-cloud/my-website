@@ -1,38 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>مرحبًا بك</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        text-align: center;
-        margin-top: 100px;
-      }
-      h1 {
-        font-size: 36px;
-      }
-      p {
-        font-size: 20px;
-        color: #555;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>مرحبًا بك 👋</h1>
-    <p>👁 عدد الزوار: <span id="count">0</span></p>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مرحبًا بك في موقعي</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #141E30, #243B55);
+      color: white;
+      font-family: 'Tahoma', sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2em;
+      opacity: 0.9;
+    }
+    .counter {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>👋 مرحبًا بك في موقعي</h1>
+  <p>سعيد بزيارتك!</p>
 
-    <script>
-      // API لحساب عدد الزيارات
-      const countEl = document.getElementById('count');
-      const namespace = "haitham-website"; // يمكنك تغييره إن أردت
-      const key = "visits";
-
-      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(res => res.json())
-        .then(res => {
-          countEl.textContent = res.value;
-        });
-    </script>
-  </body>
+  <div class="counter">
+    <h3>عدد الزوار 👇</h3>
+    <img src="https://hits.sh/haithemamrah-cloud.github.io/my-website.svg?style=plastic" alt="عدد الزوار">
+  </div>
+</body>
 </html>
